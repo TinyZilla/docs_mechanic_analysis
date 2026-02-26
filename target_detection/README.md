@@ -14,3 +14,5 @@ This is a breakdown analyzing Deadlock's target detection system. How it does Li
 5. Character LOS check from other player's perspective, and their rotational points.
 
 6. Extreme view angles, and how the aim priorities is determined? Ground Cone?
+
+![test](/media/target_detection/deadlock_los_breakdown.png)
