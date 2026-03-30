@@ -133,6 +133,8 @@ Todo: Uses Cases? Compare to Component Hooks? [Resources](https://docs.rs/bevy_e
 
 Query Lens is the byproduct of changing query signatures. The new query can be given to a reusable function for further processing.
 
+Example Case: [[Link]](https://docs.rs/bevy/latest/bevy/prelude/struct.Query.html#example-18)
+
 Key Words: Query Modification
 
 - [Transmutation](#transmutation)
