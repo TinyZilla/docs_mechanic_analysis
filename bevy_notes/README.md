@@ -2,7 +2,8 @@
 
 This section is mostly about bevy and it's fundamental building blocks.
 
-- [Query](./query/README.md)
+- [Component](./component.md)
+- [Query](./query.md)
 - Systems
     - Pipe System
     - System Set

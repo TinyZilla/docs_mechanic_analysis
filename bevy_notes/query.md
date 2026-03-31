@@ -5,6 +5,7 @@
 - [Sibling Parameters (Populated)](#sibling-parameters-populated)
 - [Filters](#filters)
 - [QueryLens](#querylens)
+- [Enum Components](#enum-components)
 
 ## Performance Impact
 
@@ -158,3 +159,34 @@ Use Cases:
 > For example, this can take a `Query<&A>` and a `Query<&B>` and return a `Query<(&A, &B)>`. The returned query will only return items with both A and B. 
 
 Note: There's a current open [PR](https://github.com/bevyengine/bevy/issues/13633) that propose expanding on the Joining API.
+
+## Enum Components
+
+Enum Components must be queried by their base class, and filtered in the system itself. That means there's some parallel performance indications for different component types. More details below.
+```rust
+use bevy::prelude::*;
+
+#[derive(Component)]
+enum PlayerState {
+    Idle,
+    Running(f32), // Enum variants can hold data
+    Jumping,
+}
+
+fn player_state_system(mut query: Query<&PlayerState>) {
+    for state in query.iter_mut() {
+        match *state {
+            PlayerState::Idle => {
+                // Handle idle logic
+            }
+            PlayerState::Running(speed) => {
+                // Handle running logic
+            }
+            _ => {}
+        }
+    }
+}
+```
+
+Note: There's an Issue that directly points to this Enum Performance / Limitation Issue: [[Link]](https://github.com/bevyengine/bevy/issues/23569). There might be a fix in the future.
+> An enum logically represents mutual exclusivity at the type level, <u>**however a specific variant can't be queried for since it's not a component by itself**</u>, requiring filtering inside the system and reducing parallelism. Even if we make enums queryable by utilizing fragmenting value components,enums are closed set and variants can't be added without source code modification, which makes it inconvenient for users who want to extend the behaviors with their own variants.
