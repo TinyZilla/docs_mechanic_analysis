@@ -2,6 +2,7 @@
 
 - [Exclusive System](#exclusive-systems)
 - [Pipe System](#pipe-system)
+- [Flush Point](#flush-point)
 - [System Params](#system-params)
 - [Resources](#resources)
 
@@ -29,6 +30,12 @@ Resource Pages: [[Overview]](https://taintedcoders.com/bevy/systems#combining-sy
 The downside is that there's no branching / early exit on Pipe systems. This is simply to deconstruct a big, complex system into chunks.
 
 > For FunctionSystems the output is the return value of the function and the input is the **first** `SystemParam` if it is tagged with `In` or `()` if the function has no designated input parameter.
+
+## Flush Point
+
+There is a special system that will apply all the changes in the command queue. This is useful if the future system is dependent on the data changes of previous systems when put in a schedule order.
+
+Resource: [apply_deferred()](https://docs.rs/bevy/latest/bevy/prelude/trait.System.html#tymethod.apply_deferred)
 
 ## System Params
 
