@@ -6,6 +6,7 @@
 - [Filters](#filters)
 - [QueryLens](#querylens)
 - [Enum Components](#enum-components)
+- [Relationship Queries](#relationship-queries)
 
 ## Performance Impact
 
@@ -190,3 +191,9 @@ fn player_state_system(mut query: Query<&PlayerState>) {
 
 Note: There's an Issue that directly points to this Enum Performance / Limitation Issue: [[Link]](https://github.com/bevyengine/bevy/issues/23569). There might be a fix in the future.
 > An enum logically represents mutual exclusivity at the type level, <u>**however a specific variant can't be queried for since it's not a component by itself**</u>, requiring filtering inside the system and reducing parallelism. Even if we make enums queryable by utilizing fragmenting value components,enums are closed set and variants can't be added without source code modification, which makes it inconvenient for users who want to extend the behaviors with their own variants.
+
+## Relationship Queries
+
+NOTE: THIS IS A PROPOSED GOAL THAT COULD HAPPEN INTHE FUTURE.
+
+Goal Page: [[Link]](https://github.com/bevyengine/bevy/issues/23018)

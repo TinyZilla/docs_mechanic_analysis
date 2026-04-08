@@ -3,6 +3,7 @@
 - [System Default Schedules](#system-default-schedules)
 - [Headless Schedule](#headless-schedule)
 - [Schedule Configuration](#schedule-configuration)
+- [System Set Executing Schedule](#system-set-execute-schedule-pattern)
 - [Resources](#resources)
 
 Think of `Schedule` as the top level container for `SystemSets` and `Systems`.
@@ -111,6 +112,24 @@ There are some settings that you can set on a per Schedule basis.
 - [ScheduleBuildSettings](https://docs.rs/bevy/latest/bevy/ecs/schedule/struct.ScheduleBuildSettings.html) 
     - [ambiguity_detection](https://docs.rs/bevy/latest/bevy/ecs/schedule/struct.ScheduleBuildSettings.html#structfield.ambiguity_detection)
     - [auto_insert_apply_deferred](https://docs.rs/bevy/latest/bevy/ecs/schedule/struct.ScheduleBuildSettings.html#structfield.auto_insert_apply_deferred)
+
+## System Set Execute Schedule Pattern
+
+Triggering conditional execution of a Specific schedule by using [World.try_schedule_scope()](https://docs.rs/bevy_ecs/latest/bevy_ecs/world/struct.World.html#method.try_schedule_scope) in an exclusive system.
+
+### Example 1: Fixed Update
+Source Code: [[Invoke]](https://github.com/bevyengine/bevy/blob/main/crates/bevy_time/src/lib.rs#L89-L92), and [[Function]](https://github.com/bevyengine/bevy/blob/main/crates/bevy_time/src/fixed.rs#L243-L258)
+
+In Bevy Core, the way Fixed Update Schedules is triggered by an exclusive system on the Main Schedule using this exact pattern.
+
+### Example 2: Physics Schedule
+
+Source Code: [[Invoke]](https://github.com/avianphysics/avian/blob/main/src/schedule/mod.rs#L111-L114), and [[Function]](https://github.com/avianphysics/avian/blob/main/src/schedule/mod.rs#L240-L284)
+
+In Avian, Physics processing is part of a different schedule called `PhysicsSchedule`, and is triggered as part of the `FixedPostUpdate` schedule using `fn run_physics_schedule` function.
+
+
+
 
 
 ## Resources

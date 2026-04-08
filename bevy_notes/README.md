@@ -2,6 +2,7 @@
 
 This section is mostly about bevy and it's fundamental building blocks.
 
+- [Cargo Package Manager](./cargo.md)
 - [Component](./component.md)
 - [Query](./query.md)
 - [Systems](./systems.md)
