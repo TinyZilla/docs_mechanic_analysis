@@ -1,5 +1,6 @@
 # Bevy General
 - [Plugin Groups](#plugin-groups)
+- [Bevy Deferred / Pipelined Rendering](#bevy-deferred)
 
 ## Plugin Groups
 
@@ -75,3 +76,44 @@ fn main() {
 }
 ```
 
+## Bevy Deferred
+
+Resources: [[Pipeline Performance Page]](https://bevy-cheatbook.github.io/setup/perf.html#pipelined-rendering), [[GPU Pipeline Page]](https://bevy-cheatbook.github.io/gpu/intro.html#pipelined-rendering)
+
+Bevy by default uses Pipelined Rendering.
+![Pipeline Rendering Example](https://bevy-cheatbook.github.io/img/pipelined-latency.png)
+
+
+> This will improve GPU utilization (make it less likely the GPU will sit idle waiting for the CPU to give it work to do), by making better use of CPU multithreading. Typically, it can result in <u>**10-30% higher framerate**</u>, sometimes more.
+
+> However, it can also affect perceived input latency (“click-to-photon” latency), often for the worse.
+
+> The actual mouse click happens in-between frames. In both cases, frame #4 is when the input is detected by Bevy. In the pipelined case, rendering of the previous frame is done in parallel, so an additional frame without the input appears on-screen.
+
+> Without pipelining, the user will see their input delayed by 1 frame. With **pipelining**, it will be <u>**delayed by 2 frames**</u>.
+
+> However, in the diagram above, the frame rate increase from <u>**pipelining is big enough that overall the input is processed and displayed sooner**</u>. Your application might not be so lucky.
+
+You can disable Pipelining by disabling the `PipelinedRenderingPlugin`:
+
+```rust
+use bevy::render::pipelined_rendering::PipelinedRenderingPlugin;
+
+App::new()
+    .add_plugins(DefaultPlugins.build().disable::<PipelinedRenderingPlugin>())
+    // ...
+    .run();
+```
+
+![Bounded Scenario](https://bevy-cheatbook.github.io/img/pipelined-rendering.png)
+
+What does Deferred mean in bevy?
+
+Since by default bevy is heavily parallelized, all the work done on this frame is going to be displayed 2 frames from now. So for computations it shouldn't matter too much.
+
+Unless pipelining is disabled, then maybe(?) deferred will do something?
+From what I understand, the concept of `Deferred` is.
+
+-> Update Positions -> Render -> Update States Etc | Cycle End
+
+so the advice of -> Things doesn't need to be happening immediately in that frame, bevy handles that perfectly. Since it's already built into the render pipeline that there's 1 frame delay on displaying.
