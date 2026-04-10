@@ -21,7 +21,7 @@ From the [Bevy Docs](https://docs.rs/bevy/latest/bevy/ecs/prelude/trait.SystemSe
 - [System Run Conditional](#system-run-conditional)
     - [Custom Run Conditions](#custom-run-conditions)
     - [Built In Run Conditions](#built-in-run-conditions)
-    - combination
+    - [Run Condition Combinations](#run-condition-combinations)
 - nesting
 
 
@@ -86,6 +86,8 @@ app.add_systems(Update, (system_z).after(system_y));
 
 ### System Run Conditional
 
+Resource: [[example]](https://github.com/bevyengine/bevy/blob/main/examples/ecs/run_conditions.rs)
+
 You can set a condition to run the `System` or `Set` through existing conditions or custom conditions.
 
 The way to set the conditional is with [IntoScheduleConfigs.run_if()](https://docs.rs/bevy/latest/bevy/prelude/trait.IntoScheduleConfigs.html#method.run_if) API, applied to `System Set` or individual `Systems`. The param is a system with [SystemCondition](https://docs.rs/bevy/latest/bevy/prelude/trait.SystemCondition.html) Trait. in layman's term that means it's <u>**a system that returns a bool**</u>.
@@ -117,6 +119,12 @@ fn any_component_is_happy(components: Query<&IsHappy>) -> bool {
 }
 ```
 
+Or you can have run condition as a part of closure for one off condition that doesn't need to get reused.
+
+```rust
+|counter: Res<InputCounter>| counter.is_changed() && !counter.is_added()
+```
+
 #### Built in Run Conditions
 
 - [General Run Conditions](https://docs.rs/bevy/latest/bevy/ecs/schedule/common_conditions/index.html):
@@ -141,12 +149,40 @@ fn any_component_is_happy(components: Query<&IsHappy>) -> bool {
     - pause
     - repeat
 
+#### Run Condition Combinations
+
+Through the [Combine](https://docs.rs/bevy_ecs/latest/bevy_ecs/system/trait.Combine.html) trait, run Condition can be [combined](https://docs.rs/bevy_ecs/latest/bevy_ecs/schedule/index.html#types)(under Type Aliases) with:
+- And
+- Nand
+- Nor
+- Or
+- Xnor
+- Xor
+
+```rust
+// Combination example using the RAW Combine Trait. Example from Combine Trait Doc.
+app.add_systems(my_system.run_if(Xor::new(
+    IntoSystem::into_system(resource_equals(A(1))),
+    IntoSystem::into_system(resource_equals(B(1))),
+    // The name of the combined system.
+    "a ^ b".into(),
+)));
+```
+
+However, this is pretty cumbersome to use so Bevy alternatively have [SystemCondition](https://docs.rs/bevy/latest/bevy/prelude/trait.SystemCondition.html) trait that every `run_if()` param impliments which strips away the boilerplate. All the classic logical operation listed above can be used.
+
+```rust
+// So it can be used as a part of the argument by chaining them together.
+app.add_systems(Update, system_a.run_if(false_condition.or(true_condition)));
+// or chain the results together
+app.add_systems(
+    Update,
+    system_b
+        .run_if(false_condition.or(true_condition).and(true_condition)),
+);
+```
+
 ## Resources
 
 - [Bevy Cheatbook System Set](https://bevy-cheatbook.github.io/programming/system-sets.html)
 - [Tainted Coder System Set](https://taintedcoders.com/bevy/systems#custom-system-sets)
-
----
-Combinations
-
-https://docs.rs/bevy_ecs/latest/bevy_ecs/schedule/index.html#types
