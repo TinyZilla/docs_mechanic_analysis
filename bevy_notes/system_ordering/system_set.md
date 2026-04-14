@@ -11,7 +11,6 @@ From the [Bevy Docs](https://docs.rs/bevy/latest/bevy/ecs/prelude/trait.SystemSe
 > Systems sets are also useful for **exposing a consistent public API** for dependencies to hook into across versions of your crate, allowing them to add systems to a specific set, or **order relative to that set**, without leaking implementation details of the exact systems involved.
 
 - [System Set Behaviour](#system-set-behaviour)
-- How to use system set
 - [Resources](#resources)
 
 ## System Set Behaviour
@@ -22,8 +21,7 @@ From the [Bevy Docs](https://docs.rs/bevy/latest/bevy/ecs/prelude/trait.SystemSe
     - [Custom Run Conditions](#custom-run-conditions)
     - [Built In Run Conditions](#built-in-run-conditions)
     - [Run Condition Combinations](#run-condition-combinations)
-- nesting
-
+- [System Set Nesting Behaviour](#system-set-nesting-behaviour)
 
 ### System Set Creation
 
@@ -49,6 +47,8 @@ app.configure_sets(Update, (OrderedSets::First, OrderedSets::Last).chain());
 app.configure_sets(Update, NestedSetA.in_set(OrderedSets::First));
 app.configure_sets(Update, NestedSetB.in_set(OrderedSets::First));
 ```
+
+Note: If the Set Configuration is **NOT added** to the Schedule, any system added to the Set is **effectively doesn't belong to any set** and is scheduled freely.
 
 Adding system to the sets is done with the usual [App.add_systems()](https://docs.rs/bevy_app/latest/bevy_app/struct.App.html#method.add_systems) API, with the addition of the trait method [IntoScheduleConfigs.in_set()](https://docs.rs/bevy/latest/bevy/prelude/trait.IntoScheduleConfigs.html#method.in_set).
 
@@ -180,6 +180,149 @@ app.add_systems(
     system_b
         .run_if(false_condition.or(true_condition).and(true_condition)),
 );
+```
+### System Set Nesting Behaviour
+
+- [Test Code](#test-code)
+- [Test Results](#test-results)
+
+#### Test Code
+I've set up the following program as a test on how nesting / SubSet system behaves. The test case is pretty self explanatory.
+
+```rust
+use bevy::prelude::*;
+
+// Resource Setup
+#[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
+enum SuperSet {
+    One,
+    Two,
+    Three,
+    Four,
+    Five,
+}
+
+#[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
+enum FooSet {
+    Before,
+    Sync,
+    After,
+}
+
+#[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
+enum BarSet {
+    Before,
+    Sync,
+    After,
+}
+
+// Systems Setup.
+fn create_system(text: &str) -> impl Fn() {
+    move || info!("{}", text)
+}
+
+fn main() {
+    let mut app = App::new();
+
+    app.add_plugins((
+        // Two PluginGroups that are included with bevy are DefaultPlugins and MinimalPlugins
+        DefaultPlugins,
+    ));
+
+    app.configure_sets(
+        Update,
+        (
+            SuperSet::One,
+            SuperSet::Two,
+            SuperSet::Three,
+            SuperSet::Four,
+            SuperSet::Five,
+        )
+            .chain(),
+    );
+    app.configure_sets(
+        Update,
+        (
+            FooSet::Before,
+            FooSet::Sync.in_set(SuperSet::Three),
+            FooSet::After,
+        )
+            .chain(),
+    );
+    app.configure_sets(
+        Update,
+        (
+            BarSet::Before,
+            BarSet::Sync.in_set(SuperSet::Three),
+            BarSet::After,
+        )
+            .chain(),
+    );
+
+    app.add_systems(Update, create_system("Super One").in_set(SuperSet::One));
+    app.add_systems(Update, create_system("Super Two").in_set(SuperSet::Two));
+    app.add_systems(
+        Update,
+        create_system("Super Three ------").in_set(SuperSet::Three),
+    );
+    app.add_systems(Update, create_system("Super Four").in_set(SuperSet::Four));
+    app.add_systems(
+        Update,
+        create_system("Super Five **********").in_set(SuperSet::Five),
+    );
+
+    app.add_systems(Update, create_system("Foo Before").in_set(FooSet::Before));
+    app.add_systems(
+        Update,
+        create_system("Foo Sync ------").in_set(FooSet::Sync),
+    );
+    app.add_systems(Update, create_system("Foo After").in_set(FooSet::After));
+
+    app.add_systems(Update, create_system("Bar Before").in_set(BarSet::Before));
+    app.add_systems(
+        Update,
+        create_system("Bar Sync ------").in_set(BarSet::Sync),
+    );
+    app.add_systems(Update, create_system("Bar After").in_set(BarSet::After));
+
+    app.run();
+}
+```
+#### Test Results
+
+For the most part, the iteration runs as expected. `Foo Before` and `Bar Before` runs before the `Sync` point and `Super Three`, and `Foo After` and `Bar After` runs after the sync point.
+
+But there's a few iterations that deviates from the observation above. The `Sync` point is not strictly enforced. Sometimes the `After` systems are unblocked by the `Sync` before the other `Sync` can run.
+
+In order to strictly enforce the Sync point, the `After` Systems should be have a strict `.after(SuperSet::Three)`, so it runs after all the `Sync` Systems.
+```
+// Interesting Cases One
+2026-04-14T21:38:13.418281Z  INFO nesting_system_sets: Bar Before
+2026-04-14T21:38:13.418285Z  INFO nesting_system_sets: Super One
+2026-04-14T21:38:13.418405Z  INFO nesting_system_sets: Super Two
+2026-04-14T21:38:13.418450Z  INFO nesting_system_sets: Bar Sync ------
+2026-04-14T21:38:13.418307Z  INFO nesting_system_sets: Foo Before
+2026-04-14T21:38:13.418460Z  INFO nesting_system_sets: Super Three ------
+2026-04-14T21:38:13.418519Z  INFO nesting_system_sets: Bar After
+2026-04-14T21:38:13.418574Z  INFO nesting_system_sets: Foo Sync ------
+2026-04-14T21:38:13.418754Z  INFO nesting_system_sets: Foo After
+2026-04-14T21:38:13.418756Z  INFO nesting_system_sets: Super Four
+2026-04-14T21:38:13.418842Z  INFO nesting_system_sets: Super Five **********
+```
+
+```
+// Interesting case Two
+2026-04-14T21:38:13.442149Z  INFO nesting_system_sets: Bar Before
+2026-04-14T21:38:13.442150Z  INFO nesting_system_sets: Super One
+2026-04-14T21:38:13.442161Z  INFO nesting_system_sets: Foo Before
+2026-04-14T21:38:13.442259Z  INFO nesting_system_sets: Super Two
+2026-04-14T21:38:13.442373Z  INFO nesting_system_sets: Bar Sync ------
+2026-04-14T21:38:13.442427Z  INFO nesting_system_sets: Bar After
+2026-04-14T21:38:13.442375Z  INFO nesting_system_sets: Super Three ------
+2026-04-14T21:38:13.442373Z  INFO nesting_system_sets: Foo Sync ------
+2026-04-14T21:38:13.442607Z  INFO nesting_system_sets: Super Four
+2026-04-14T21:38:13.442606Z  INFO nesting_system_sets: Foo After
+2026-04-14T21:38:13.442656Z  INFO nesting_system_sets: Super Five **********
 ```
 
 ## Resources
