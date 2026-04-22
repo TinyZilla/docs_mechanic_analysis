@@ -1,35 +1,90 @@
 # Time Dilation
 
-The idea here is to figure out how does time dilation works in ZZZ.
-
-- Chain Attack Timing
-    - Observed to be action movement just after the impact.
-- Dodge Counter Timing
-    - Controlled character moved at full speed.
-- Parry
-- Projectiles
-    - Friendly (Astra?)
-    - Enemies (Thrower?)
+- [Chain Attack Timings](#chain-attack-timings)
+- [Projectiles](#projectiles)
+- [Dodge Counter Timings](#dodge-counter-timings)
+- [Parry](#parry)
 - Particles.
 - Deduce Physics system.
 
+## Chain Attack Timings
 
-====
-Cool.
-Definately Kinamatic bodies.
+- [Nicole](#nicole-chain-timing)
+- [Caesar](#caesar-chain-timing)
+- [Koleda](#koleda-chain-timing)
+- [Billy](#billy-chain-timing)
+- [Miyabi](#miyabi-chain-timing)
 
-Otherwise I need 2 physics world...
+Averages at 0.2 ish at 24 FPS. that's one single FixedUpdate tick at 60 Hz.
 
-friendly projectiles are unchanged.
+So the transition feel probably comes from the gradiant around the sides from the UI
 
-enemy projectiles are slow'd
+All of the chain attacks -- Time slow kicks in some time after the initial hit.
+In Caesar's case, the 2nd hit follow up happens after the timing of the first hit, so freeze frame is cool.
 
-COOL.
+#### Nicole Chain Timing
 
-Impact / Slow time is different for each characters.
+![nicole chain](./media/t_slow_chain_nicole.gif)
 
-But the Slow timing is RLY fast.
+#### Caesar Chain Timing
 
-=====
+![caesar chain timing](./media/t_slow_chain_caeser.gif)
 
-Alright. Video processing.
+#### Koleda Chain Timing
+
+![koleda chain timing](./media/t_slow_chain_kolaeda.gif)
+
+#### Billy Chain Timing
+
+![billy chain](./media/t_slow_chain_billy.gif)
+
+#### Miyabi Chain Timing
+
+![miyabi chain](./media/t_slow_chain_miyabi.gif)
+
+## Projectiles
+
+- [Enemy Projectiles](#enemy-projectiles)
+- [Friendly Projectiles](#friendly-projectiles)
+
+### Enemy Projectiles
+
+![molotove thrower projectiles](./media/t_slow_enemy_projectile.gif)
+
+### Friendly Projectiles
+
+![astra projectiles](./media/t_slow_dodge_astra_atk.gif)
+
+## Dodge Counter Timings
+
+- [Billy Dodge](#billy-dodge-timing)
+- [Astra Dodge](#astra-dodge-timing)
+
+#### Billy Dodge Timing
+
+![Billy Dodge Timing](./media/t_slow_dodge_billy.gif)
+
+#### Astra Dodge Timing
+
+![Astra dodge timing](./media/t_slow_dodge_astra.gif)
+
+## Parry
+
+- [Parry Timing](#parry-timing)
+- [Parry Camera Movement](#parry-camera-transition)
+
+### Parry Timing
+
+![Parry Time Slow Timing](./media/t_slow_parry.gif)
+
+### Parry Camera Transition
+
+- [Camera Front](#parry-camera-front)
+- [Camera Right](#parry-camera-right)
+
+#### Parry Camera Front
+![Parry Camera Front](./media/t_slow_parry_camera_front.gif)
+
+#### Parry Camera Right
+
+![Parry Camera Right](./media/t_slow_parry_camera_right.gif)
