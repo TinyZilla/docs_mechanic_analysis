@@ -5,9 +5,9 @@
 - [Dodge Counter Timings](#dodge-counter-timings)
 - [Parry](#parry)
 
-There seems to be a <u>**Friendly / Enemy Particle distinction**</u>. It is possible for enemy particle to freeze while player character partiles moves at full speed. In chain trigger everything freezes. I seee some gameplay potential where the enemy triggers the time slow instead.
+There seems to be a <ins>**Friendly / Enemy Particle distinction**</ins>. It is possible for enemy particle to freeze while player character partiles moves at full speed. In chain trigger everything freezes. I seee some gameplay potential where the enemy triggers the time slow instead.
 
-From my understanding <u>**physics is entirely Kinematic based**</u>. Friendly and Enemy projectiles and movement can run on different time ratios. That either means the application scales with different time deltas or delta multipliers. It is possible that there's two different physics worlds running at two different clocks, but it's complicated to maintain.
+From my understanding <ins>**physics is entirely Kinematic based**</ins>. Friendly and Enemy projectiles and movement can run on different time ratios. That either means the application scales with different time deltas or delta multipliers. It is possible that there's two different physics worlds running at two different clocks, but it's complicated to maintain.
 
 ## Chain Attack Timings
 
@@ -23,7 +23,7 @@ With this short of a transition time the Easing function is probably not needed.
 
 The transition feel probably comes from the gradiant around the sides from the UI & The Camera Zoom positioning Tween. The time slow is near instant.
 
-All of the chain attacks -- <u>**Time slow kicks in some time after the initial hit**</u>.
+All of the chain attacks -- <ins>**Time slow kicks in some time after the initial hit**</ins>.
 In Caesar's case, the 2nd hit follow up happens after the timing of the first hit, so freeze frame is cool.
 
 #### Nicole Chain Timing

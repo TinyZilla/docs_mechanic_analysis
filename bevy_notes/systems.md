@@ -19,7 +19,7 @@ Special system with direct mutable world access -- which means it can reach all 
 
 > For example we can run commands exactly when the system runs, instead of scheduling them to run later:
 >
-> The downside of exclusive systems is that they <u>**cannot be run in parallel**</u> if other systems also need to mutate the world. Otherwise they work exactly the same as your normal systems.
+> The downside of exclusive systems is that they <ins>**cannot be run in parallel**</ins> if other systems also need to mutate the world. Otherwise they work exactly the same as your normal systems.
 
 ## Pipe System
 

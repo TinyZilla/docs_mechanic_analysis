@@ -15,7 +15,7 @@ It doesn't have:
 - Implicit Nested Schedule Label
     - It requires explicit setup for nested execution. See [Main::run_main](https://github.com/bevyengine/bevy/blob/main/crates/bevy_app/src/main_schedule.rs#L290)
 
-So it <u>**should NOT be used for System Ordering**</u>. It is useful for custom system setup logic, aka adding another fix loop running at a different frequency, etc. Adding Special processing step that needs to happen after all the system defaults during setup or game loop. Or just defining your own loop if you don't like the name or whatever.
+So it <ins>**should NOT be used for System Ordering**</ins>. It is useful for custom system setup logic, aka adding another fix loop running at a different frequency, etc. Adding Special processing step that needs to happen after all the system defaults during setup or game loop. Or just defining your own loop if you don't like the name or whatever.
 
 ## System Default Schedules
 

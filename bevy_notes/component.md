@@ -6,8 +6,8 @@
 ## Storage Type
 Resource Page: [[Link]](https://docs.rs/bevy/latest/bevy/ecs/component/trait.Component.html#choosing-a-storage-type)
 
-- `Table` (Default) -- optimized for <u>**query iteration**</u>
-- `SparseSet` -- optimized for component <u>**insertion and removal**</u>
+- `Table` (Default) -- optimized for <ins>**query iteration**</ins>
+- `SparseSet` -- optimized for component <ins>**insertion and removal**</ins>
     - indicated by macro `#[component(storage = "SparseSet")]`
 
 ## Required Component

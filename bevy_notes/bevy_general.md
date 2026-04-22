@@ -84,15 +84,15 @@ Bevy by default uses Pipelined Rendering.
 ![Pipeline Rendering Example](https://bevy-cheatbook.github.io/img/pipelined-latency.png)
 
 
-> This will improve GPU utilization (make it less likely the GPU will sit idle waiting for the CPU to give it work to do), by making better use of CPU multithreading. Typically, it can result in <u>**10-30% higher framerate**</u>, sometimes more.
+> This will improve GPU utilization (make it less likely the GPU will sit idle waiting for the CPU to give it work to do), by making better use of CPU multithreading. Typically, it can result in <ins>**10-30% higher framerate**</ins>, sometimes more.
 
 > However, it can also affect perceived input latency (“click-to-photon” latency), often for the worse.
 
 > The actual mouse click happens in-between frames. In both cases, frame #4 is when the input is detected by Bevy. In the pipelined case, rendering of the previous frame is done in parallel, so an additional frame without the input appears on-screen.
 
-> Without pipelining, the user will see their input delayed by 1 frame. With **pipelining**, it will be <u>**delayed by 2 frames**</u>.
+> Without pipelining, the user will see their input delayed by 1 frame. With **pipelining**, it will be <ins>**delayed by 2 frames**</ins>.
 
-> However, in the diagram above, the frame rate increase from <u>**pipelining is big enough that overall the input is processed and displayed sooner**</u>. Your application might not be so lucky.
+> However, in the diagram above, the frame rate increase from <ins>**pipelining is big enough that overall the input is processed and displayed sooner**</ins>. Your application might not be so lucky.
 
 You can disable Pipelining by disabling the `PipelinedRenderingPlugin`:
 

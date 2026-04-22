@@ -4,9 +4,9 @@ From the [Bevy Docs](https://docs.rs/bevy/latest/bevy/ecs/prelude/trait.SystemSe
 
 > System sets are tag-like labels that can be used to **group systems together**.
 > 
-> This allows you to <u>**share configuration**</u> (like run conditions) across multiple systems, and <u>**order systems or system sets**</u> relative to conceptual groups of systems. 
+> This allows you to <ins>**share configuration**</ins> (like run conditions) across multiple systems, and <ins>**order systems or system sets**</ins> relative to conceptual groups of systems. 
 >
-> System sets can belong to any number of other system sets, allowing you to create <u>**nested hierarchies of system sets**</u> to group systems together
+> System sets can belong to any number of other system sets, allowing you to create <ins>**nested hierarchies of system sets**</ins> to group systems together
 >
 > Systems sets are also useful for **exposing a consistent public API** for dependencies to hook into across versions of your crate, allowing them to add systems to a specific set, or **order relative to that set**, without leaking implementation details of the exact systems involved.
 
@@ -90,9 +90,9 @@ Resource: [[example]](https://github.com/bevyengine/bevy/blob/main/examples/ecs/
 
 You can set a condition to run the `System` or `Set` through existing conditions or custom conditions.
 
-The way to set the conditional is with [IntoScheduleConfigs.run_if()](https://docs.rs/bevy/latest/bevy/prelude/trait.IntoScheduleConfigs.html#method.run_if) API, applied to `System Set` or individual `Systems`. The param is a system with [SystemCondition](https://docs.rs/bevy/latest/bevy/prelude/trait.SystemCondition.html) Trait. in layman's term that means it's <u>**a system that returns a bool**</u>.
+The way to set the conditional is with [IntoScheduleConfigs.run_if()](https://docs.rs/bevy/latest/bevy/prelude/trait.IntoScheduleConfigs.html#method.run_if) API, applied to `System Set` or individual `Systems`. The param is a system with [SystemCondition](https://docs.rs/bevy/latest/bevy/prelude/trait.SystemCondition.html) Trait. in layman's term that means it's <ins>**a system that returns a bool**</ins>.
 
-<u>Note: check out related from **Query**</u>: [here](./query.md#sibling-parameters-populated)
+<ins>Note: check out related from **Query**</ins>: [here](./query.md#sibling-parameters-populated)
 
 #### Custom Run Conditions
 You can create a `SystemCondition` like this:
