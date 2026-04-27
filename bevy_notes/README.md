@@ -8,3 +8,6 @@ This section is mostly about bevy and it's fundamental building blocks.
 - [Query](./query.md)
 - [Systems](./systems.md)
 - [Schedule vs System Set](./system_ordering/README.md)
+
+## Bevy Ecosystem Notes
+- [Bevy Hanabi (Particles)](./bevy_hanabi/overview.md)
