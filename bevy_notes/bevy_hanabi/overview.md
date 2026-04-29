@@ -27,6 +27,9 @@ Batched Hanabi: https://github.com/pcwalton/bevy_hanabi
 
 ## Concepts
 
+This is basically just shader code with extra steps.
+I suppose it's alright...
+
 - Effect
     - [EffectAsset](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/struct.EffectAsset.html)
         - Builder API
@@ -43,6 +46,7 @@ Batched Hanabi: https://github.com/pcwalton/bevy_hanabi
             - [EffectAsset.mesh()](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/struct.EffectAsset.html#method.mesh)
 - Attributes
     - [SetAttributeModifier](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/modifier/attr/struct.SetAttributeModifier.html)
+        - Some values are compile-time constants, like which attribute a SetAttributeModifier mutates
     - An effect attribute is a quantity stored per particle for all particles. Unlike properties, each particle can have a different value for each attribute. Examples of particle attributes include the particle’s own position and its velocity. Attributes are represented by the Attribute type.
 - Properties
     - [link](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/properties/index.html)
@@ -61,9 +65,32 @@ Batched Hanabi: https://github.com/pcwalton/bevy_hanabi
         - with_emit_on_start
 - [Module](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/graph/expr/struct.Module.html)
     - A module represents a storage for a set of expressions used in a single EffectAsset. Modules are not reusable accross effect assets; each effect asset owns a single module, containing all the expressions used in all the modifiers attached to that asset. 
+    - Typically created From Writer.
 - Writer
+    - [ExprWriter](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/graph/expr/struct.ExprWriter.html)
+    - Utility to write expressions with a simple functional syntax. 
+    - Comes From Module. Need to be [finish()](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/graph/expr/struct.ExprWriter.html#method.finish)'d.
+    - Typically From New.
+    - There is an option to use an existing module -- [ExprWriter.from_module()](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/graph/expr/struct.ExprWriter.html#method.from_module)
 - Expression
-- Modifiers
+    - Others however can take the form of expressions, which form a mini language designed to emit shader code and provide extended customization. 
+    - Lit
+        - [Module.lit()](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/graph/expr/struct.Module.html#method.lit)
+    - Attribute
+        - [Module.attr()](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/graph/expr/struct.Module.html#method.attr)
+    - Property
+        - [Module.prop()](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/graph/expr/struct.Module.html#method.prop)
+    - Operations
+        - Max, min, sin, tan, bitwise, etc.
+- [Modifiers](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/modifier/index.html)
+    - init
+    - Update
+    - render
+    - Compile time Constants
+    - Expressions (Change on the fly)
+    - [ShaderWriter](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/modifier/struct.ShaderWriter.html)
+    - Example
+        - [Velocity Circle Modifier](https://github.com/djeedai/bevy_hanabi/blob/main/src/modifier/velocity.rs#L62-L67)
 - Components
     - [ParticleEffect](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/struct.ParticleEffect.html)
     - [Effect Materials](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/struct.EffectMaterial.html)
@@ -95,6 +122,11 @@ Batched Hanabi: https://github.com/pcwalton/bevy_hanabi
 - [expr.rs](https://github.com/djeedai/bevy_hanabi/blob/main/examples/expr.rs)
     - Probably teaches you how to write a custom expression. iunno.
 
+## Aging Code -- For Lifetime Maybe.
+
+- [Aging Code](https://github.com/djeedai/bevy_hanabi/blob/main/src/lib.rs#L1212-L1214) -- Search `Configure aging code`
+- [Position Update Code](https://github.com/djeedai/bevy_hanabi/blob/main/src/lib.rs#L1088-L1092) -- Search `nparticle.{0} += particle.{1} * sim_params.delta_time`
+- Looks Like `sim_params.delta_time` is how you access the delta time of the particle.
 
 ## Texture adding process
 
