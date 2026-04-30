@@ -37,6 +37,7 @@ I suppose it's alright...
         - [AlphaMode](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/enum.AlphaMode.html)
         - [SimulationSpace](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/enum.SimulationSpace.html)
             - Local Space vs Global Space
+            - [EffectAsset.with_simulation_space()](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/struct.EffectAsset.html#method.with_simulation_space)
         - [MotionIntegration](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/enum.MotionIntegration.html)
             - No clue yet. but i'd imagine this is why Firework Behaves with Velocity transfer.
         - Adding Modifiers
@@ -44,7 +45,7 @@ I suppose it's alright...
             - [EffectAsset.update()](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/struct.EffectAsset.html#method.update)
             - [EffectAsset.render()](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/struct.EffectAsset.html#method.render)
             - [EffectAsset.mesh()](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/struct.EffectAsset.html#method.mesh)
-- Attributes
+- [Attributes](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/attributes/index.html)
     - [SetAttributeModifier](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/modifier/attr/struct.SetAttributeModifier.html)
         - Some values are compile-time constants, like which attribute a SetAttributeModifier mutates
     - An effect attribute is a quantity stored per particle for all particles. Unlike properties, each particle can have a different value for each attribute. Examples of particle attributes include the particle’s own position and its velocity. Attributes are represented by the Attribute type.
@@ -89,6 +90,8 @@ I suppose it's alright...
     - Compile time Constants
     - Expressions (Change on the fly)
     - [ShaderWriter](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/modifier/struct.ShaderWriter.html)
+    - [OrientModifier](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/modifier/output/struct.OrientModifier.html)
+        [OrientMode](https://docs.rs/bevy_hanabi/latest/bevy_hanabi/modifier/output/enum.OrientMode.html)
     - Example
         - [Velocity Circle Modifier](https://github.com/djeedai/bevy_hanabi/blob/main/src/modifier/velocity.rs#L62-L67)
 - Components
@@ -128,6 +131,21 @@ I suppose it's alright...
 - [Position Update Code](https://github.com/djeedai/bevy_hanabi/blob/main/src/lib.rs#L1088-L1092) -- Search `nparticle.{0} += particle.{1} * sim_params.delta_time`
 - Looks Like `sim_params.delta_time` is how you access the delta time of the particle.
 
+--
+Just need to update spawn's delta time now.
+
+
+## Personal Examples & Notes
+
+- Lifetime doesn't work without age initialization.
+- It all compiles down to code in the backend. so it's cool to see under the hood on what the code compiles to.
+- Attribute::Size. -- Control the size of the particle.
+- Cone emitter:
+    - Circle Initial Spawn shape.
+    - Sphere Initial Velocity With offset.
+- When using `SimulationSpace::Local`
+    - `OrientMode::FaceCameraPosition` does not seem to work so well. It have weird rotation.
+    - `OrientMode::ParallelCameraDepthPlane` seem'd to cause the particle to face camera position... which is perfect.
 ## Texture adding process
 
 1. Add Texture to texture slot.
