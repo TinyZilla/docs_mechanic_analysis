@@ -1,6 +1,7 @@
 # Bevy General
 - [Plugin Groups](#plugin-groups)
 - [Bevy Deferred / Pipelined Rendering](#bevy-deferred)
+- [Bevy Feature Flags](https://docs.rs/crate/bevy/latest/features)
 
 ## Plugin Groups
 
