@@ -1,5 +1,6 @@
 # Bevy Decals
 
+- [Bevy Feature Overview 0.16 Decals](https://bevy.org/news/bevy-0-16/#decals)
 - [Forward Decals](https://docs.rs/bevy/latest/bevy/pbr/decal/struct.ForwardDecal.html)
     - Any camera rendering a forward decal <ins>**must**</ins> have the `DepthPrepass` component
     - On Wasm, requires using <ins>**WebGPU**</ins> and <ins>**disabling Msaa**</ins> on your camera.
