@@ -11,6 +11,7 @@ This section is mostly about bevy and it's fundamental building blocks.
 
 ---
 - [Decals](./decals.md)
+- [Skeletal Animation & Skinning](./animation_n_skinning.md)
 
 ## Bevy Ecosystem Notes
 - [Bevy Hanabi (Particles)](./bevy_hanabi/overview.md)
