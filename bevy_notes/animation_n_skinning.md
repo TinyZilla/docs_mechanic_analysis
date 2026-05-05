@@ -36,3 +36,21 @@
     - Example of Vertex Data & Manual Bone chain structure.
     - **Observation**: `Mesh::ATTRIBUTE_JOINT_INDEX` and `Mesh::ATTRIBUTE_JOINT_WEIGHT` are both 4 length array / vector. This means a single vertex can only be influenced by a maximum of 4 bones at once. This is done due to real time graphics limitaitons. (Google it.)
         > If you rig a character with more than 4 influences in modeling software and export it to a game engine, the engine will often "prune" or delete the smallest weights to normalize the vertex back to the 4-bone limit.
+
+## Pose Snapshot Notes
+There are two approaches I can think of:
+1. Bake the deformation by animation to a mesh.
+    - Pros:
+        - Pay Computational Cost only once.
+        - Good for GPU Time Constraint environment. Since Matrix math is expendsive.
+    - Cons:
+        - Takes up memory, both RAM and GPU Memory.
+        - Since it's a different mesh I don't think Batching will apply.
+        - The poses are probably single use and throw away. unless there's some caching mechanism for each instance the mesh is needed.
+2. Keep the same mesh but create a different skeleton for the mesh to refer to.
+    - Pros:
+        - Mesh Batching
+        - Skeletal Reuse for different poses.
+    - Cons:
+        - More Skeleton means more mesh deformation.
+        - For meshes with a lot of verticies and bones this might be rough in terms of computation time. Since this might needed to be calculated per frame whenever the mesh is on screen.
