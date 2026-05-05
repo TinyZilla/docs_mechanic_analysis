@@ -22,6 +22,11 @@
             - Which Bones affect our verticies
             - Weight - How this particular bone affect the vertex.
 - Animation Information
+    - Interpolation of bone position between frames
+    - model space transform need to calculate the chain of matrix multiplication of the bone chain.
+        - This is expendisve with large number of bones & animations running at once.
+- Skinning Matrix
+    - Inverse Bind Pose Matrix * Transformation matrix from bone B to model space.
 
 ## Examples
 
