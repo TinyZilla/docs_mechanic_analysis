@@ -10,3 +10,12 @@
     - named_nodes - [GltfNode](https://docs.rs/bevy/latest/bevy/gltf/struct.GltfNode.html)
     - or a vec variant which contains all the assets.
 - [GltfAssetLabel](https://docs.rs/bevy/latest/bevy/gltf/enum.GltfAssetLabel.html)
+- Hierarchy
+    - Gltf Node
+        - Gltf Node (children)
+        - Gltf Mesh
+            - Gltf Primitive
+                - Mesh
+                - StandardMaterial - Option
+        - Gltf Skin
+        - Gltf Extras
