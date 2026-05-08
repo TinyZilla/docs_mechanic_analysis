@@ -8,6 +8,7 @@ This section is mostly about bevy and it's fundamental building blocks.
 - [Query](./query.md)
 - [Systems](./systems.md)
 - [Schedule vs System Set](./system_ordering/README.md)
+- [Asset Loading](./asset_loading/asset_loading.md)
 
 ---
 - [Decals](./decals.md)
