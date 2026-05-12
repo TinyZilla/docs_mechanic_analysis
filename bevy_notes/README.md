@@ -8,11 +8,12 @@ This section is mostly about bevy and it's fundamental building blocks.
 - [Query](./query.md)
 - [Systems](./systems.md)
 - [Schedule vs System Set](./system_ordering/README.md)
-- [Asset Loading](./asset_loading/asset_loading.md)
 
----
+## Sub systems
+- [Asset Loading](./asset_loading/asset_loading.md)
+- [Animation System](./bevy_animation.md)
+    - [Skeletal Animation & Skinning](./animation_n_skinning.md)
 - [Decals](./decals.md)
-- [Skeletal Animation & Skinning](./animation_n_skinning.md)
 
 ## Bevy Ecosystem Notes
 - [Bevy Hanabi (Particles)](./bevy_hanabi/overview.md)
